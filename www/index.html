@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<script>
+/*
+(function() {
+	if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) 
+	{
+		var msViewportStyle = document.createElement("style");
+		msViewportStyle.appendChild( document.createTextNode("@-ms-viewport{width:auto!important}") );
+		document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+	}
+})(); 
+*/           
+</script>
+
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>ArchMobile App</title>
+        
+<link rel="stylesheet" type="text/css" href="libs/appframework-2.1.1/css/icons.css" />    
+<link rel="stylesheet" type="text/css" href="libs/appframework-2.1.1/css/af.ui.css" />
+<link rel="stylesheet" type="text/css" href="libs/appframework-2.1.1/plugins/css/af.selectBox.css" />
+
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" charset="utf-8" src="libs/jquery-2.1.1/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="libs/appframework-2.1.1/ui/af.ui.jquery.min.js"></script>
+<!-- include afplugins -->
+<script type="text/javascript" charset="utf-8" src="libs/appframework-2.1.1/plugins/af.scroller.js"></script>
+<!-- 3rd libs -->
+
+<script type="text/javascript">
+/* include af.desktopBrowsers.js on desktop browsers only */
+if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) 
+{
+	var script = document.createElement("script");
+	script.src = "libs/appframework-2.1.1/plugins/af.desktopBrowsers.js";
+	var tag = $("head").append(script);
+}
+
+/* set theme start  */
+var search = "default";
+if(document.location.search.toLowerCase().replace("?","").length >0 )
+	search = document.location.search.toLowerCase().replace("?",""); //for debug
+if(search)
+{
+	$.os.useOSThemes=true;
+	if(search.indexOf("win8") !== -1) $.os.ie=true;
+	$.ui.ready(function(){
+		if(search.indexOf("-light") !== -1)
+		{
+			$("#afui").get(0).className = search.replace("-", " ");
+		} else {   
+			$("#afui").get(0).className = search;
+		}
+	});
+} 
+/* set theme end  */        
+
+/* init app code start */
+var webRoot = "./";
+$.ui.openLinksNewTab = false;
+$.ui.animateHeaders = false;
+$.ui.backButtonText = "back";
+$.ui.setRightSideMenuWidth('250px');
+/* init app code end */
+            
+/* This code is used to run as soon as cordova activates */
+var onCordovaDeviceReady = function() 
+{	
+
+};           
+
+/* global function start */
+
+/* global function end */
+</script>
+<style>
+.redColor{background-color:#d99}
+.blueColor{background-color:#99d}
+</style>
+</head>
+<body>
+	<div id="afui" class="default">
+		
+		<!-- default aside menu -->
+		<aside class="hasMenu splitview tabletMenu">
+			<header class="header">
+				<h1 id="am_userName">UserName</h1> <a class="button icon user"> </a>
+			</header>
+			<ul class="list">
+				<li class="divider">menu</li> 
+				<li><a href="#" onclick="af.ui.toggleRightSideMenu();" class="icon home big">homepage</a></li>
+                <li><a href="#" onclick="af.ui.toggleRightSideMenu();" class="icon question big">online help</a></li>
+				<li><a href="#" onclick="af.ui.toggleRightSideMenu();" class="icon refresh big">switch user</a></li>
+				<li><a href="#" onclick="navigator.app.exitApp();" class="icon error big">exit app</a></li>
+			</ul>
+		</aside>            	
+        <!-- global_header -->
+		<header id="global_header">
+			<a onclick="$.ui.goBack()" class='backButton button'>back</a>
+            <a onClick="af.ui.toggleRightSideMenu();" class='menuButton' style="float:right"></a>	
+            <h1 id="pageTitle">ArchMobile</h1>		
+		</header>
+		<!-- global_footer -->
+		<footer id="global_footer">
+			<a href="#main" id='global_home' class='icon home' data-transition="none">home</a>
+			<a href="#" id='global_favorite' class="icon star"  data-transition="none">favorite</a>
+			<a href="#" id='global_setting' class="icon settings"  data-transition="none">setting</a>
+			<a href="#" id='global_about' class="icon info" data-transition="none">about</a>
+		</footer>
+   
+        
+		<!-- content with panels -->
+		<div id="content">        
+        	<!-- Login Page -->
+        	<div title='Login' id="login" class="panel"  data-footer="none" selected="true" data-load="initLoginPage" data-unload="unloadLoginPage">
+            	<header>
+					<a onClick="$.ui.loadContent('#main',false,false,'slide');" class='button icon settings big' style="float:right">main</a>
+					<h1>Demo</h1>
+				</header>
+                <div style="text-align:center">
+                	<br><br>
+					<p>This is space for login message</p>
+					<br> <br> <br/>
+                    <input id="username" type="text" placeholder="user name" data-touchlayer='ignore'/>
+					<input type="password" id="password"  placeholder="password" data-touchlayer='ignore'>                        
+					<div class="input-group" >          
+                    	<label for="am_theme"> <font color="#FF0000">*</font>theme:</label>
+                        <div id="themeDiv" >	
+							<select id="am_theme" onChange="saveTheme();"  style="border: 1px #ccc solid; width:67%">
+								<option value="default">default</option>
+								<option value="ios">ios6</option>
+								<option value="ios7">ios7</option>
+								<option value="bb">blackberry10</option>
+							</select>                                    
+						</div>        
+					</div>
+					<a class="button block green" href="#" id="login" onClick="login();">login</a> 
+                    <div style="text-align:center;color:#F00" id="loginMsg">&nbsp;</div>
+				</div>   
+                <script>
+					function initLoginPage()
+					{
+						$.selectBox.getOldSelects("themeDiv");						
+					}
+					function unloadLoginPage()
+					{			
+						//TODO:
+					}
+					
+					/** longin **/
+					function login()
+					{
+						var _serverAddr ="";
+						var _username = $("#username").val();
+						var _password = $("#password").val();
+						$("#loginMsg").html("&nbsp;");
+						if(_serverAddr.length==0)
+						{
+							_serverAddr = "http://192.168.1.165:8080/demo"
+						}
+						else
+						{
+							var msg = "";
+							if(_username == "")
+								msg += "plz input user name!";
+							if(_password == "")
+								msg += "plz input password!";
+							if(msg.length > 0)
+							{
+								$("#loginMsg").html(msg);
+							}
+							else
+							{
+								$.ui.showMask("logining");
+								var successCallback = function(loginMsg)
+								{
+									var loginFlag = loginMsg.loginFlag;
+									if (loginFlag=="Y")
+									{										
+										$("#am_userName").html(json.userName);  
+										$.ui.hideMask();								
+										$.ui.loadContent("#main",false,false,"pop");
+										$.ui.clearHistory();
+									}
+									else
+									{  
+										$.ui.hideMask();
+										$.ui.popup( { title:"warning", message:"plz check ur password",  cancelText:"Done", cancelOnly:true } );							
+									}
+								};
+								var errorCallback = function(json)
+								{ 
+									$.ui.hideMask();
+									$.ui.popup( { title:"warning", message:"can not connect to server,plz try again later",  cancelText:"Done", cancelOnly:true } );	
+								};
+								
+								$.ajax({
+									type: "POST",
+									timeout: 2000,
+									url: _serverAddr+"/ws/cxf/mobile/login",
+									dataType: "json",
+									contentType: "application/json; charset=utf-8",
+									data:  "{\"userName\":\""+_username+"\",\"password\":\""+_password+"\"}",
+									success: successCallback,
+									error: errorCallback
+								});
+							}
+						}
+					}
+					
+					function saveTheme()
+					{
+						alert($("#am_theme").val());
+						//save	
+					}
+				</script>       
+            </div>                 
+            
+            <!-- Main Page -->
+            <div title='Welcome' id="main" class="panel parentpage" data-footer="global_footer" data-load="initMainPage" data-unload="unloadMainPage" > 
+				<header>
+            		<a onClick="af.ui.toggleRightSideMenu();" class='menuButton' style="float:right"></a>	
+            		<h1>Welcome</h1>		
+				</header>
+                <div id="subpage_home" class="subpage" style="margin:0px -10px">
+                    <h2 style="text-align:center">Welcome To Demo.</h2>
+                    <ul class="list">
+                        <li class="divider">Simple Business Demos</li>
+                            <li><a href="#am_demoDes" id='demo_desc' class='icon paper big' data-transition="none">Read Me</a></li>
+                            <li><a href="#am_Online"  id='doc_display' class='icon picture big' data-transition="slide">Online Demo</a></li>
+                            <li><a href="#am_offline" id='doc_downlaod' class='icon download big' data-transition="slide">Offline Demo</a></li>  
+                    </ul>
+				</div>                
+				<script>
+					function initMainPage(div)
+					{
+						//TODO:						
+					}
+					function unloadMainPage()
+					{		
+						//TODO:
+					}														
+				</script> 
+			</div>            
+            <!-- Main Page End -->
+            
+        </div><!-- Content End -->
+    </body>
+</html>
